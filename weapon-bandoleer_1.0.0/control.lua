@@ -4,16 +4,16 @@
 -- Detects when ammo is added or removed from the ammo bar
 --script.on_event(defines.events.on_player_ammo_inventory_changed, function()end);
 
-script.on_event("weapon-bandoleer-input-weapon-1", function(event) JumpToIndex(event, 1) end);
-script.on_event("weapon-bandoleer-input-weapon-2", function(event) JumpToIndex(event, 2) end);
-script.on_event("weapon-bandoleer-input-weapon-3", function(event) JumpToIndex(event, 3) end);
-script.on_event("weapon-bandoleer-input-weapon-4", function(event) JumpToIndex(event, 4) end);
-script.on_event("weapon-bandoleer-input-weapon-5", function(event) JumpToIndex(event, 5) end);
-script.on_event("weapon-bandoleer-input-weapon-6", function(event) JumpToIndex(event, 6) end);
-script.on_event("weapon-bandoleer-input-weapon-7", function(event) JumpToIndex(event, 7) end);
-script.on_event("weapon-bandoleer-input-weapon-8", function(event) JumpToIndex(event, 8) end);
-script.on_event("weapon-bandoleer-input-weapon-9", function(event) JumpToIndex(event, 9) end);
-script.on_event("weapon-bandoleer-input-weapon-0", function(event) JumpToIndex(event, 0) end);
+script.on_event("weapon-bandoleer-input-weapon-1", function(event) JumpToIndex(event, 1); game.get_player(event.player_index).play_sound({path = "utility/switch_gun",}); end);
+script.on_event("weapon-bandoleer-input-weapon-2", function(event) JumpToIndex(event, 2); game.get_player(event.player_index).play_sound({path = "utility/switch_gun",}); end);
+script.on_event("weapon-bandoleer-input-weapon-3", function(event) JumpToIndex(event, 3); game.get_player(event.player_index).play_sound({path = "utility/switch_gun",}); end);
+script.on_event("weapon-bandoleer-input-weapon-4", function(event) JumpToIndex(event, 4); game.get_player(event.player_index).play_sound({path = "utility/switch_gun",}); end);
+script.on_event("weapon-bandoleer-input-weapon-5", function(event) JumpToIndex(event, 5); game.get_player(event.player_index).play_sound({path = "utility/switch_gun",}); end);
+script.on_event("weapon-bandoleer-input-weapon-6", function(event) JumpToIndex(event, 6); game.get_player(event.player_index).play_sound({path = "utility/switch_gun",}); end);
+script.on_event("weapon-bandoleer-input-weapon-7", function(event) JumpToIndex(event, 7); game.get_player(event.player_index).play_sound({path = "utility/switch_gun",}); end);
+script.on_event("weapon-bandoleer-input-weapon-8", function(event) JumpToIndex(event, 8); game.get_player(event.player_index).play_sound({path = "utility/switch_gun",}); end);
+script.on_event("weapon-bandoleer-input-weapon-9", function(event) JumpToIndex(event, 9); game.get_player(event.player_index).play_sound({path = "utility/switch_gun",}); end);
+script.on_event("weapon-bandoleer-input-weapon-0", function(event) JumpToIndex(event, 0); game.get_player(event.player_index).play_sound({path = "utility/switch_gun",}); end);
 
 -- Detects when the player cycles their gun forwards
 script.on_event("weapon-bandoleer-input-next-weapon",
@@ -261,9 +261,11 @@ script.on_event(defines.events.on_player_cursor_stack_changed,
 			local entity = player.selected;
 			if(entity ~= nil) then
 				local ent_inv = entity.get_inventory(defines.inventory.chest);
-				local bandoleer = FindBandoleerByID(ent_inv, player_globals.active_bandoleer);
-				if(bandoleer ~= nil) then
-					OnBandoleerMovedFromInventory(player, bandoleer);
+				if(ent_inv ~= nil) then
+					local bandoleer = FindBandoleerByID(ent_inv, player_globals.active_bandoleer);
+					if(bandoleer ~= nil) then
+						OnBandoleerMovedFromInventory(player, bandoleer);
+					end
 				end
 			end
 		end
