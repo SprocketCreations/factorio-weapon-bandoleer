@@ -145,12 +145,10 @@ data:extend({
 	},
 	{
 		--Recipe
-		--ingredients = {{"iron-plate", 4}, {"iron-stick", 4}, {"wood", 4}},
-		ingredients = {},
-		enabled = true,
+		ingredients = {{"iron-plate", 4}, {"iron-stick", 4}, {"wood", 4}},
+		enabled = false,
 		result = "weapon-bandoleer",
-		--energy_required = 10.0,
-		energy_required = 0.1,
+		energy_required = 10.0,
 		--Base
 		type = "recipe",
 		name = "weapon-bandoleer",
