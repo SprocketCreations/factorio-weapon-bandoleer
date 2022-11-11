@@ -1,6 +1,6 @@
 {
 	"name": "weapon-bandoleer",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "Weapon Bandoleer",
     "author": "Sprocket Creations",
 	"description": "Adds additional weapon slots via a bandoleer item. Useful for mods that add lots of weapons to the game.",

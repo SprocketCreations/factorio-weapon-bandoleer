@@ -102,7 +102,8 @@ data:extend({
 		-- Custom Input
 		key_sequence = "",
 		linked_game_control = "next-weapon",
-		consuming = "game-only",
+		--consuming = "game-only",
+		consuming = "none",
 		action = "lua",
 		-- Base
 		type = "custom-input",

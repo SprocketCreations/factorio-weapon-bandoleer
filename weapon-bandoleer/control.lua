@@ -21,14 +21,14 @@ script.on_event("weapon-bandoleer-input-next-weapon",
 		local player = game.get_player(event.player_index);
 		if(player.vehicle == nil) then
 			RotateCW(event);
-		else
-			local gun_index = player.vehicle.selected_gun_index;
+	--[[else
+		local gun_index = player.vehicle.selected_gun_index;
 			gun_index = gun_index + 1;
 			local number_of_gun_slots = #player.vehicle.prototype.indexed_guns;
 			if(gun_index > number_of_gun_slots) then gun_index = gun_index - number_of_gun_slots; end
-			player.vehicle.selected_gun_index = gun_index;
+			player.vehicle.selected_gun_index = gun_index;--[[]]
 		end
-		player.play_sound({path = "utility/switch_gun",});
+		--player.play_sound({path = "utility/switch_gun",});
 	end
 );
 
@@ -86,7 +86,7 @@ script.on_configuration_changed(
 script.on_event(defines.events.on_gui_opened,
 	function (event)
 		if(event.gui_type == defines.gui_type.item) then
-			if(event.item.prototype.subgroup.name == "bandoleer") then
+			if(event.item ~= nil and event.item.prototype.subgroup.name == "bandoleer") then
 				-- This code is run whenever the bandoleer's inventory is opened
 				local player_globals = global.players[event.player_index];
 				player_globals.previewed_bandoleer = event.item.item_number;
@@ -98,6 +98,7 @@ script.on_event(defines.events.on_gui_opened,
 					bandoleer_active = true;
 				end
 
+
 				local bandoleer = event.item;
 				if(bandoleer.label == nil) then bandoleer.label = "Weapon Bandoleer [1/0]"; end
 				local reversed_label = string.reverse(bandoleer.label);
@@ -108,7 +109,7 @@ script.on_event(defines.events.on_gui_opened,
 
 				local player = game.get_player(event.player_index);
 				local frame = player.gui.relative.weapon_bandoleer_activate_bandoleer_frame;
-				frame.visible = true;
+				frame.visible = FindBandoleerByID(player.get_main_inventory(), bandoleer.item_number) ~= nil;
 
 				--change button text
 				frame.frame.weapon_bandoleer_activate_bandoleer_button.caption = bandoleer_active and {"gui.deactivate-bandoleer"} or {"gui.activate-bandoleer"};
@@ -125,7 +126,7 @@ script.on_event(defines.events.on_gui_opened,
 script.on_event(defines.events.on_gui_closed,
 	function (event)
 		if(event.gui_type == defines.gui_type.item) then
-			if(event.item.prototype.subgroup.name == "bandoleer") then
+			if(event.item ~= nil and event.item.prototype.subgroup.name == "bandoleer") then
 				-- This code is run whenever the bandoleer's inventory is closed
 				local player_globals = global.players[event.player_index];
 
@@ -359,12 +360,15 @@ function RotateCW(event)
 	local globals = global.players[event.player_index];
 	if(globals.active_bandoleer == nil) then
 		--Vanilla Weapon Functionality
-		selection = selection + 1;
+		--Leaving this if as a short circuit
+		--selection = selection + 1;
 	elseif(globals.previewed_bandoleer == nil) then
 		Rotate(event, 1);
 		selection = globals.weapon_alignment + 2;
 	end
 
+	--to offset and counter the built in weapon selector trying to move the cursor
+	selection = selection - 1;
 	-- Wrap selection to range
 	if(selection <= 0) then selection = 3 ;
 	elseif(selection >= 4) then selection = 1; end

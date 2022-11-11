@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------------------------------
+Version: 1.0.1
+Date: 2022.11.10
+  Bugfixes:
+    - Fixed issue where the mod would block the input for starting a new game, softlocking the player.
+    - Bandoleers can no longer be activated while in a chest.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.0
+Date: 2022.11.09
+  Info:
+    - Initial release.
