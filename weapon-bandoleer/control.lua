@@ -314,20 +314,19 @@ function DeinitializeMod()
 end
 
 function InitializeMod(player)
-	global.players[player.index] = {
-		previewed_bandoleer = nil,
-		active_bandoleer = nil,
-		gun_1_home = nil,
-		gun_2_home = nil,
-		gun_3_home = nil,
+	if( global.players[player.index] == nil) then
+		global.players[player.index] = {
+			previewed_bandoleer = nil,
+			active_bandoleer = nil,
+			gun_1_home = nil,
+			gun_2_home = nil,
+			gun_3_home = nil,
 
-		weapon_alignment = GetWeaponAlignment(player);
-	};
-
-
+			weapon_alignment = GetWeaponAlignment(player);
+		};
+	end
 
 	if(player.gui.relative.weapon_bandoleer_activate_bandoleer_frame == nil) then
-
 		local main_frame = player.gui.relative.add({
 			type = "frame",
 			name = "weapon_bandoleer_activate_bandoleer_frame",
