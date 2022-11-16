@@ -41,9 +41,13 @@ script.on_event("weapon-bandoleer-input-previous-weapon",
 		else
 			local gun_index = player.vehicle.selected_gun_index;
 			gun_index = gun_index - 1;
-			local number_of_gun_slots = #player.vehicle.prototype.indexed_guns;
-			if(gun_index <= 0) then gun_index = number_of_gun_slots - gun_index; end
-			player.vehicle.selected_gun_index = gun_index;
+			if(player.vehicle.prototype.indexed_guns == nil) then
+				return;
+			else
+				local number_of_gun_slots = #player.vehicle.prototype.indexed_guns;
+				if(gun_index <= 0) then gun_index = number_of_gun_slots - gun_index; end
+				player.vehicle.selected_gun_index = gun_index;
+			end
 		end
 		player.play_sound({path = "utility/switch_gun",});
 	end
