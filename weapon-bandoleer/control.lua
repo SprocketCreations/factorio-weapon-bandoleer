@@ -363,19 +363,18 @@ function RotateCW(event)
 	local globals = global.players[event.player_index];
 	if(globals.active_bandoleer == nil) then
 		--Vanilla Weapon Functionality
-		--Leaving this if as a short circuit
+		--Leaving this in as a short circuit
 		--selection = selection + 1;
 	elseif(globals.previewed_bandoleer == nil) then
 		Rotate(event, 1);
 		selection = globals.weapon_alignment + 2;
+		--to offset and counter the built in weapon selector trying to move the cursor
+		selection = selection - 1;
+		-- Wrap selection to range
+		if(selection <= 0) then selection = 3 ;
+		elseif(selection >= 4) then selection = 1; end
+		player.character.selected_gun_index = selection;
 	end
-
-	--to offset and counter the built in weapon selector trying to move the cursor
-	selection = selection - 1;
-	-- Wrap selection to range
-	if(selection <= 0) then selection = 3 ;
-	elseif(selection >= 4) then selection = 1; end
-	player.character.selected_gun_index = selection;
 end
 
 function RotateCCW(event)
