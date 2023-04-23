@@ -134,6 +134,10 @@ data:extend({
 		 -- this allows bots to satisfy logistics requests to the bandoleer's inventory
 		extends_inventory_by_default = true,
 		subgroup = "bandoleer",
+		item_filters = {
+			--This table will be populated with the various guns and ammos during data-final-fixes
+		},
+		filter_mode = "whitelist",
 		item_subgroup_filters = {"gun", "ammo"},
 		--Item
 		icon = "__weapon-bandoleer__/graphics/icons/item/weapon-bandoleer.png",
