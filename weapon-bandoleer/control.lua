@@ -26,7 +26,7 @@ script.on_event("weapon-bandoleer-input-next-weapon",
 			gun_index = gun_index + 1;
 			local number_of_gun_slots = #player.vehicle.prototype.indexed_guns;
 			if(gun_index > number_of_gun_slots) then gun_index = gun_index - number_of_gun_slots; end
-			player.vehicle.selected_gun_index = gun_index;--[[]]
+			player.vehicle.selected_gun_index = gun_index;]]
 		end
 		--player.play_sound({path = "utility/switch_gun",});
 	end
@@ -38,18 +38,28 @@ script.on_event("weapon-bandoleer-input-previous-weapon",
 		local player = game.get_player(event.player_index);
 		if(player.vehicle == nil) then
 			RotateCCW(event);
+			player.play_sound({path = "utility/switch_gun",});
 		else
-			local gun_index = player.vehicle.selected_gun_index;
-			gun_index = gun_index - 1;
-			if(player.vehicle.prototype.indexed_guns == nil) then
-				return;
-			else
+			--[[] ]
+			From: https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.indexed_guns
+				| indexed_guns :: array[LuaItemPrototype]? Read 
+				| A vector of the gun prototypes of this car, spider vehicule, or artillery wagon or turret.
+				| Can only be used if this is Car or SpiderVehicle or ArtilleryTurret or ArtilleryWagon
+			--[ ]]
+			local player_in_vehicle_with_guns = player.vehicle.prototype.type == "car"
+		--[[ Yes I know that the player ]]	 or player.vehicle.prototype.type == "spider-vehicle"
+		--[[ cant enter arty. But maybe ]]	 or player.vehicle.prototype.type == "artillery-turret"
+		--[[ a mod adds that so I check ]]	 or player.vehicle.prototype.type == "artillery-wagon";
+
+			if(player_in_vehicle_with_guns and player.vehicle.prototype.indexed_guns ~= nil) then
+				local gun_index = player.vehicle.selected_gun_index - 1;
 				local number_of_gun_slots = #player.vehicle.prototype.indexed_guns;
 				if(gun_index <= 0) then gun_index = number_of_gun_slots - gun_index; end
 				player.vehicle.selected_gun_index = gun_index;
+
+				player.play_sound({path = "utility/switch_gun",});
 			end
 		end
-		player.play_sound({path = "utility/switch_gun",});
 	end
 );
 
@@ -245,7 +255,7 @@ script.on_event(defines.events.on_player_fast_transferred,
 			OnBandoleerMovedFromInventory(game.get_player(event.player_index), FindBandoleerByID(event.entity.chest, bandoleer_id));
 		end
 	end
-);--[[]]
+);]]
 
 script.on_event(defines.events.on_player_dropped_item,
 	function(event)
@@ -306,9 +316,9 @@ end
 
 function DeinitializeMod()
 	for _, player in pairs(game.players) do
-		local button = player.gui.screen.weapon_bandoleer_activate_bandoleer_frame;
-		if(button ~= nil) then
-			button.destroy();
+		local frame = player.gui.relative.weapon_bandoleer_activate_bandoleer_frame;
+		if(frame ~= nil) then
+			frame.destroy();
 		end
 	end
 end
