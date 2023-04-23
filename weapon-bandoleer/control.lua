@@ -588,8 +588,9 @@ end
 function AppendGunAndAmmoToBandoleer(gun, ammo, bandoleer)
 	local bandoleer_inventory = bandoleer.get_inventory(defines.inventory.item_main);
 	local slots = #bandoleer_inventory;
-	local rows = slots / 10;
-	for row = 0, rows, 2 do
+	local rows = slots / 20;
+	local row = 0;
+	while(row <= rows) do
 		for col = 1, 10, 1 do
 			local gun_slot_index = (row * 10) + col;
 			local ammo_slot_index = ((row + 1) * 10) + col;
@@ -601,6 +602,7 @@ function AppendGunAndAmmoToBandoleer(gun, ammo, bandoleer)
 				return;
 			end
 		end
+		row = row + 2;
 	end
 end
 
