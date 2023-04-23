@@ -1,8 +1,14 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.0.5
+Date: 2023.4.22
+  Bugfixes:
+    - Fixed crash when player has no character.
+    - Fixed some modded weapons and ammos not being whitelisted.
+---------------------------------------------------------------------------------------------------
 Version: 1.0.4
 Date: 2022.11.28
   Bugfixes:
-    - Actually fixed crash when witching weapons in vehicle with no weapons.
+    - Fixed crash when switching weapons in vehicle with no weapons.
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.3
 Date: 2022.11.23
