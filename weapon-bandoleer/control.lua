@@ -185,15 +185,16 @@ script.on_event(defines.events.on_gui_click,
 		if(event.element.name == "weapon_bandoleer_activate_bandoleer_button" and event.button == defines.mouse_button_type.left) then
 			local player_globals = global.players[event.player_index];
 			local player = game.get_player(event.player_index);
-			local deactivating_current_bandoleer = false;
-			local first_bandoleer = false;
-			if(player_globals.active_bandoleer == player_globals.previewed_bandoleer) then
-				deactivating_current_bandoleer = true;
-			end
-
-			--change button text
-			event.element.caption = deactivating_current_bandoleer and {"gui.activate-bandoleer"} or {"gui.deactivate-bandoleer"};
-			event.element.tooltip = deactivating_current_bandoleer and {"gui.activate-bandoleer-tooltip"} or {"gui.deactivate-bandoleer-tooltip"};
+			if(player.character ~= nil) then
+				local deactivating_current_bandoleer = false;
+				local first_bandoleer = false;
+				if(player_globals.active_bandoleer == player_globals.previewed_bandoleer) then
+					deactivating_current_bandoleer = true;
+				end
+				
+				--change button text
+				event.element.caption = deactivating_current_bandoleer and {"gui.activate-bandoleer"} or {"gui.deactivate-bandoleer"};
+				event.element.tooltip = deactivating_current_bandoleer and {"gui.activate-bandoleer-tooltip"} or {"gui.deactivate-bandoleer-tooltip"};
 			--change label text
 			event.element.parent.label.caption = deactivating_current_bandoleer and {"gui.bandoleer_label_inactive"} or {"gui.bandoleer_label_active"};
 			
@@ -201,10 +202,10 @@ script.on_event(defines.events.on_gui_click,
 				--No bandoleer equiped
 				--Kick items from weapon bar to bandoleer
 				first_bandoleer = true;
-
+				
 				local selection = player_globals.weapon_alignment + 2;
 				player.character.selected_gun_index = selection;
-
+				
 			elseif(not (player_globals.active_bandoleer == player_globals.previewed_bandoleer)) then
 				--Deactivate old bandoleer
 				local bandoleer = FindBandoleerByID(player.get_main_inventory(), player_globals.active_bandoleer);
@@ -218,7 +219,7 @@ script.on_event(defines.events.on_gui_click,
 				player_globals.active_bandoleer = player_globals.previewed_bandoleer;
 				--Activate new bandoleer
 				local bandoleer = FindBandoleerByID(player.get_main_inventory(), player_globals.active_bandoleer);
-
+				
 				if(first_bandoleer) then
 					local gun_inventory = player.get_inventory(defines.inventory.character_guns);
 					local ammo_inventory = player.get_inventory(defines.inventory.character_ammo);
@@ -226,6 +227,7 @@ script.on_event(defines.events.on_gui_click,
 						AppendGunAndAmmoToBandoleer(gun_inventory[i], ammo_inventory[i], bandoleer);
 					end
 				end
+			end
 			end
 		end
 	end
@@ -369,40 +371,44 @@ end
 
 function RotateCW(event)
 	local player = game.get_player(event.player_index);
-	local selection = player.character.selected_gun_index;
-	local globals = global.players[event.player_index];
-	if(globals.active_bandoleer == nil) then
-		--Vanilla Weapon Functionality
-		--Leaving this in as a short circuit
-		--selection = selection + 1;
-	elseif(globals.previewed_bandoleer == nil) then
-		Rotate(event, 1);
-		selection = globals.weapon_alignment + 2;
-		--to offset and counter the built in weapon selector trying to move the cursor
-		selection = selection - 1;
-		-- Wrap selection to range
-		if(selection <= 0) then selection = 3 ;
-		elseif(selection >= 4) then selection = 1; end
-		player.character.selected_gun_index = selection;
+	if(player.character ~= nil) then
+		local selection = player.character.selected_gun_index;
+		local globals = global.players[event.player_index];
+		if(globals.active_bandoleer == nil) then
+			--Vanilla Weapon Functionality
+			--Leaving this in as a short circuit
+			--selection = selection + 1;
+		elseif(globals.previewed_bandoleer == nil) then
+			Rotate(event, 1);
+			selection = globals.weapon_alignment + 2;
+			--to offset and counter the built in weapon selector trying to move the cursor
+			selection = selection - 1;
+			-- Wrap selection to range
+			if(selection <= 0) then selection = 3 ;
+			elseif(selection >= 4) then selection = 1; end
+			player.character.selected_gun_index = selection;
+		end
 	end
 end
 
 function RotateCCW(event)
 	local player = game.get_player(event.player_index);
-	local selection = player.character.selected_gun_index;
-	local globals = global.players[event.player_index];
-	if(globals.active_bandoleer == nil) then
-		--Vanilla+ Weapon Functionality
-		selection = selection - 1;
-	elseif(globals.previewed_bandoleer == nil) then
-		Rotate(event, -1);
-		selection = globals.weapon_alignment + 2;
-	end
+	if(player.character ~= nil) then
+		local selection = player.character.selected_gun_index;
+		local globals = global.players[event.player_index];
+		if(globals.active_bandoleer == nil) then
+			--Vanilla+ Weapon Functionality
+			selection = selection - 1;
+		elseif(globals.previewed_bandoleer == nil) then
+			Rotate(event, -1);
+			selection = globals.weapon_alignment + 2;
+		end
 
-	-- Wrap selection to range
-	if(selection <= 0) then selection = 3 ;
-	elseif(selection >= 4) then selection = 1; end
-	player.character.selected_gun_index = selection;
+		-- Wrap selection to range
+		if(selection <= 0) then selection = 3 ;
+		elseif(selection >= 4) then selection = 1; end
+		player.character.selected_gun_index = selection;
+	end
 end
 
 function Rotate(event, delta)
